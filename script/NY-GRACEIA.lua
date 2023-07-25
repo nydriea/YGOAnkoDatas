@@ -37,7 +37,7 @@ function NYGracia.GenerateToken(c, limitCode, tokenCode)
 
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-	e1:SetDescription(aux.Stringid(m,0))
+	e1:SetDescription(aux.Stringid(limitCode,0))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1,limitCode)
@@ -134,7 +134,7 @@ function NYGracia. RealeaseTokenToSpecialSummon(c, type)
         else
             e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
     end
-    e1:SetDescription(aux.Stringid(m,1))
+    e1:SetDescription(aux.Stringid(limitCode,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetCost(SpecialSummonCost)
 	e1:SetTarget(SpecialSummonTarget)
