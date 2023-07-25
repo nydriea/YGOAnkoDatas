@@ -35,7 +35,7 @@ end
 --#region e1
 function cm.e1con(e,tp,eg,ep,ev,re,r,rp)
 	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
-	return bit.band(loc,LOCATION_ONFIELD)~=0
+	return brp==1-tp and it.band(loc,LOCATION_ONFIELD)~=0
 		and Duel.IsChainDisablable(ev) and not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
 end
 function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk)

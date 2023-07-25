@@ -8,8 +8,10 @@ function NYGracia.GenerateToken(c, tokenCode)
         return fc:IsSetCard(NYGracia.CardSet) and fc:IsAbleToGrave()
     end
     local function GenerateTokenCost(e,tp,eg,ep,ev,re,r,rp,chk)
-        if chk==0 then return Duel.IsExistingMatchingCard(GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,e:GetHandler()) end
-        Duel.SendtoGrave(tp,GenerateTokenCostFilter,1,1,REASON_COST)
+        if chk==0 then return Duel.IsExistingMatchingCard(GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
+        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+        local g=Duel.SelectMatchingCard(tp,GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,1,nil,e:GetHandler())
+        Duel.SendtoGrave(g,REASON_COST)
     end
     local function GenerateTokenTarget(e,tp,eg,ep,ev,re,r,rp,chk)
         if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and
@@ -51,7 +53,7 @@ end
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
 function NYGracia. RealeaseTokenToSpecialSummon(c, type)
     local summontype = SUMMON_TYPE_SPECIAL
-    local mustbematerial
+    local mustbematerial = nil
     if type==TYPE_RITUAL then
         summontype = SUMMON_TYPE_RITUAL
     elseif type==TYPE_FUSION then
@@ -68,7 +70,7 @@ function NYGracia. RealeaseTokenToSpecialSummon(c, type)
         mustbematerial=EFFECT_MUST_BE_LMATERIAL
     end
     local function SpecialSummonCostFilter(fc)
-        return c:IsCode(182224001)
+        return fc:IsCode(182224001)
     end
     local function SpecialSummonCost(e,tp,eg,ep,ev,re,r,rp,chk)
         if chk==0 then return Duel.CheckReleaseGroup(tp,SpecialSummonCostFilter,1,nil,tp) end
@@ -78,54 +80,59 @@ function NYGracia. RealeaseTokenToSpecialSummon(c, type)
     end
     local function SpecialSummonTargetFilter(tc,e,tp,ctype)
         local levelranklinkcheck = tc:IsLevel(8) or tc:IsRank(4) or tc:IsLink(3)
-        local materialcheck = true;
-        if type==TYPE_FUSION then
-            materialcheck = tc:CheckFusionMaterial()
-        elseif type==TYPE_SYNCHRO then
-            materialcheck = tc:CheckSynchroMaterial()
-        elseif type==TYPE_XYZ then
-            materialcheck = tc:CheckXyzMaterial()
+        local result = tc:IsType(ctype) and tc:IsSetCard(NYGracia.CardSet)
+            and levelranklinkcheck 
+        if ctype==TYPE_RITUAL then
+            Debug.Message(result)
         end
-        local result = tc:IsType(ctype) and tc:IsSetCard(NYGracia.CardSet) 
-            and levelranklinkcheck and materialcheck
-            and tc:IsCanBeSpecialSummoned(e,summontype,tp,false,false)
-        if type~=nil and type~=TYPE_RITUAL then
-            result = result and Duel.GetLocationCountFromEx(tp,tp,nil,tc)>0
+        if ctype~=TYPE_MONSTER and ctype~=TYPE_RITUAL then
+            result = result and Duel.GetLocationCountFromEx(tp,tp,nil,tc)>0 and tc:IsCanBeSpecialSummoned(e,summontype,tp,false,false)
+        else
+            if ctype==TYPE_RITUAL then
+                result = result and Duel.GetLocationCount(tp, LOCATION_MZONE)>0 tc:IsCanBeSpecialSummoned(e,summontype,tp,false,true)
+            else
+                result = result and Duel.GetLocationCount(tp, LOCATION_MZONE)>0 tc:IsCanBeSpecialSummoned(e,summontype,tp,false,false)
+            end
         end
         return result
     end
     local function SpecialSummonTarget(e,tp,eg,ep,ev,re,r,rp,chk)
-        if chk==0 then return aux.MustMaterialCheck(nil,tp,EFFECT_MUST_BE_FMATERIAL)
-            and Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,type) end
+        if chk==0 then
+            if (type==TYPE_FUSION or type==TYPE_SYNCHRO or type==TYPE_XYZ or type==TYPE_LINK)  then
+                return aux.MustMaterialCheck(nil,tp,mustbematerial)
+                and Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,type) 
+            else
+                return Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,e,tp,type)
+            end
+        end
     end
     local function SpecialSummonOperation(e,tp,eg,ep,ev,re,r,rp)
         --融合、同调、超量、连接
         if (type==TYPE_FUSION or type==TYPE_SYNCHRO or type==TYPE_XYZ or type==TYPE_LINK) then
             if not aux.MustMaterialCheck(nil,tp,mustbematerial) then return end
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-            local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,nil)
+            local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,type)
             local tc=g:GetFirst()
             if tc then
                 tc:SetMaterial(nil)
-                if Duel.SpecialSummonStep(tc,summontype,tp,tp,false,false,POS_FACEUP) then
-                    tc:CompleteProcedure()
+                if Duel.SpecialSummon(tc,summontype,tp,tp,false,false,POS_FACEUP)~=0 and  type==TYPE_XYZ then
+                    Duel.BreakEffect()
+                    Duel.Overlay(tc,Group.FromCards(e:GetHandler()))
                 end
             end
-            if Duel.SpecialSummonComplete() and  type==TYPE_XYZ then
-                Duel.BreakEffect()
-                Duel.Overlay(tc,Group.FromCards(e:GetHandler()))
-            end
-        --卡组的特殊召唤、仪式
         else
+            --卡组的特殊召唤、仪式
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-            local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,nil)
+            local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,e,tp,type)
             local tc=g:GetFirst()
             if tc then
-                if type==TYPE_RITUAL then tc:SetMaterial(nil) end
-                Duel.SpecialSummonStep(tc,summontype,tp,tp,false,false,POS_FACEUP)
-                tc:CompleteProcedure()
+                if type==TYPE_RITUAL then
+                    tc:SetMaterial(nil)
+                    Duel.SpecialSummon(tc,summontype,tp,tp,false,true,POS_FACEUP)
+                else
+                    Duel.SpecialSummon(tc,summontype,tp,tp,false,false,POS_FACEUP)
+                end
             end
-            Duel.SpecialSummonComplete()
         end
     end
 

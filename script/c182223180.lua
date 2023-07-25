@@ -49,7 +49,7 @@ function cm.e2filter(c,tp)
 end
 function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToRemove() and eg:IsExists(cm.e2filter,1,nil,tp) end
-	return Duel.SelectEffectYesNo(tp,e:GetHandler(),96)
+	return Duel.SelectEffectYesNo(tp,e:GetHandler(),0)
 end
 function cm.e2val(e,c)
 	return cm.e2filter(c,e:GetHandlerPlayer())

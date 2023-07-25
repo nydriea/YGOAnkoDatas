@@ -116,13 +116,13 @@ function cm.e3tgfilter(c,tp)
 end
 function cm.e3tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and cm.e3tgfilter(chkc) end
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and cm.e3tgfilter(chkc,tp) end
 	if chk==0 then return true end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 	local g=Duel.SelectTarget(tp,cm.e3tgfilter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,1,0,0)
 end
-function ccm.e3op(e,tp,eg,ep,ev,re,r,rp)
+function cm.e3op(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SSet(tp,tc)

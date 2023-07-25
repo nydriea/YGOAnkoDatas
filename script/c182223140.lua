@@ -23,7 +23,6 @@ function cm.initial_effect(c)
     --1回合1次，自己对「神祝」怪兽召唤·特殊召唤成功的场合才能发动。
     --把对方的额外卡组确认，选那之内的1只怪兽里侧表示除外。
     local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
