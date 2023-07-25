@@ -8,15 +8,16 @@ function cm.initial_effect(c)
 	
     --这张卡被送去墓地的场合，以自己墓地1张「神祝」卡为对象才能发动。
     --那张卡加入手卡。
-    local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(48424886,1))
-	e4:SetCategory(CATEGORY_TOHAND)
-	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_TO_GRAVE)
-	e4:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
-	e4:SetTarget(cm.target)
-	e4:SetOperation(cm.operation)
-	c:RegisterEffect(e4)
+    local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(48424886,1))
+	e1:SetCategory(CATEGORY_TOHAND)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_TO_GRAVE)
+	e1:SetCountLimit(1,m+2)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
+	e1:SetTarget(cm.target)
+	e1:SetOperation(cm.operation)
+	c:RegisterEffect(e1)
 end
 
 function cm.filter(c)
