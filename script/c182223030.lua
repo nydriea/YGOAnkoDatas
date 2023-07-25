@@ -3,7 +3,7 @@ local m=182223030
 local cm=_G["c"..m]
 xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
-	gracia.GenerateToken(c,m,182224002)
+	gracia.GenerateToken(c,182224002)
     gracia.RealeaseTokenToSpecialSummon(c,TYPE_SYNCHRO)
 
     --这张卡被送去墓地的场合，支付1200基本分才能发动。

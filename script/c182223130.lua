@@ -3,7 +3,7 @@ local m=182223130
 local cm=_G["c"..m]
 xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
-    gracia.GenerateToken(c,m,182224006)
+    gracia.GenerateToken(c,182224006)
     gracia.RealeaseTokenToSpecialSummon(c,TYPE_RITUAL)
 
     local e1=Effect.CreateEffect(c)

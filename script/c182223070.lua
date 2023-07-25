@@ -3,7 +3,7 @@ local m=182223070
 local cm=_G["c"..m]
 xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
-	gracia.GenerateToken(c,m,182224004)
+	gracia.GenerateToken(c,182224004)
     gracia.RealeaseTokenToSpecialSummon(c,nil)
 	
     --这张卡被送去墓地的场合，以自己墓地1张「神祝」卡为对象才能发动。

@@ -3,7 +3,7 @@ local m=182223010
 local cm=_G["c"..m]
 xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
-	gracia.GenerateToken(c,m,182224001)
+	gracia.GenerateToken(c,182224001)
     gracia.RealeaseTokenToSpecialSummon(c,TYPE_XYZ)
 
     --这张卡被送去墓地的场合，以这张卡以外自己墓地5只「神祝」怪兽为对象才能发动。
