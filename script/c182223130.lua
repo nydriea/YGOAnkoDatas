@@ -2,8 +2,8 @@
 local m=182223130
 local cm=_G["c"..m]
 function cm.initial_effect(c)
-    c:GenerateToken(182224006)
-    c:RealeaseTokenToSpecialSummon(TYPE_RITUAL)
+    cm.GenerateToken(c,182224006)
+    cm.RealeaseTokenToSpecialSummon(c,TYPE_RITUAL)
 
     local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_TOGRAVE)
@@ -38,7 +38,7 @@ function cm.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function GenerateToken(c, tokenCode)
+function cm.GenerateToken(c, tokenCode)
     local function GenerateTokenCostFilter(fc)
         return fc:IsSetCard(NY0xf79) and fc:IsAbleToGrave()
     end
@@ -87,7 +87,7 @@ end
 
 
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
-function RealeaseTokenToSpecialSummon(c, type)
+function cm.RealeaseTokenToSpecialSummon(c, type)
     local summontype = SUMMON_TYPE_SPECIAL
     local mustbematerial = nil
     if type==TYPE_RITUAL then

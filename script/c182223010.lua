@@ -2,8 +2,8 @@
 local m=182223010
 local cm=_G["c"..m]
 function cm.initial_effect(c)
-	c:GenerateToken(182224001)
-    c:RealeaseTokenToSpecialSummon(TYPE_XYZ)
+	cm.GenerateToken(c,182224001)
+    cm.RealeaseTokenToSpecialSummon(c,TYPE_XYZ)
 
     --这张卡被送去墓地的场合，以这张卡以外自己墓地5只「神祝」怪兽为对象才能发动。
     --那些怪兽回到卡组洗切。那之后，自己从卡组抽2张。
@@ -43,7 +43,7 @@ function cm.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-function GenerateToken(c, tokenCode)
+function cm.GenerateToken(c, tokenCode)
     local function GenerateTokenCostFilter(fc)
         return fc:IsSetCard(NY0xf79) and fc:IsAbleToGrave()
     end
@@ -92,7 +92,7 @@ end
 
 
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
-function RealeaseTokenToSpecialSummon(c, type)
+function cm.RealeaseTokenToSpecialSummon(c, type)
     local summontype = SUMMON_TYPE_SPECIAL
     local mustbematerial = nil
     if type==TYPE_RITUAL then

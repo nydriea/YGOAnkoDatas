@@ -2,8 +2,8 @@
 local m=182223050
 local cm=_G["c"..m]
 function cm.initial_effect(c)
-	c:GenerateToken(182224003)
-    c:RealeaseTokenToSpecialSummon(TYPE_FUSION)
+	cm.GenerateToken(c,182224003)
+    cm.RealeaseTokenToSpecialSummon(c,TYPE_FUSION)
     
     --这张卡被送去墓地的场合才能发动。
     --这张卡特殊召唤。那之后，对方回复1000基本分。
@@ -33,7 +33,7 @@ function cm.operation(e,tp,eg,ep,ev,re,r,rp)
     Duel.Recover(tp-1,1000,REASON_EFFECT)
 end
 
-function GenerateToken(c, tokenCode)
+function cm.GenerateToken(c, tokenCode)
     local function GenerateTokenCostFilter(fc)
         return fc:IsSetCard(NY0xf79) and fc:IsAbleToGrave()
     end
@@ -82,7 +82,7 @@ end
 
 
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
-function RealeaseTokenToSpecialSummon(c, type)
+function cm.RealeaseTokenToSpecialSummon(c, type)
     local summontype = SUMMON_TYPE_SPECIAL
     local mustbematerial = nil
     if type==TYPE_RITUAL then
