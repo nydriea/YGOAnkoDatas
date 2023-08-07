@@ -94,30 +94,35 @@ end
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
 function cm.RealeaseTokenToSpecialSummon(c)
     local function SpecialSummonCostFilter(fc)
-        return fc:IsCode(182224001)
+        return fc:IsCode(182224001) and fc:IsReleasable()
     end
     local function SpecialSummonCost(e,tp,eg,ep,ev,re,r,rp,chk)
         if chk==0 then return Duel.CheckReleaseGroup(tp,SpecialSummonCostFilter,1,nil,tp) end
-        local g=Duel.SelectReleaseGroup(tp,SpecialSummonCostFilter,1,1,nil,tp)
+        local g=Duel.SelectReleaseGroup(tp,SpecialSummonCostFilter,1,1,nil)
         g:AddCard(e:GetHandler())
         Duel.Release(g,REASON_COST)
     end
-    local function SpecialSummonTargetFilter(tc,e,tp)
-        return tc:IsRank(4) and tc:IsType(TYPE_XYZ) and tc:IsSetCard(0xf79) and Duel.GetLocationCountFromEx(tp,tp,nil,tc)>0
-            and tc:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SYNCHRO,tp,false,false)
+    local function SpecialSummonTargetFilter(tc,e,tp,sg)
+        return tc:IsRank(4) and tc:IsType(TYPE_XYZ) and tc:IsSetCard(0xf79) and Duel.GetLocationCountFromEx(tp,tp,sg,tc)>0
+            and tc:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
     end
     local function SpecialSummonTarget(e,tp,eg,ep,ev,re,r,rp,chk)
-        if chk==0 then return aux.MustMaterialCheck(nil,tp,EFFECT_MUST_BE_XMATERIAL)
-            and Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,nil,e,tp) end
+        if chk==0 then
+            local sc=Duel.GetFirstMatchingCard(SpecialSummonCostFilter,tp,LOCATION_MZONE,0,nil)
+            local sg=Group.CreateGroup()
+            sg:AddCard(e:GetHandler())
+            sg:AddCard(sc)
+            return aux.MustMaterialCheck(nil,tp,EFFECT_MUST_BE_XMATERIAL)
+            and Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,sg) end
     end
     local function SpecialSummonOperation(e,tp,eg,ep,ev,re,r,rp)
         if not aux.MustMaterialCheck(nil,tp,EFFECT_MUST_BE_XMATERIAL) then return end
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-        local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp)
+        local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,nil)
         local tc=g:GetFirst()
         if tc then
             tc:SetMaterial(nil)
-            if Duel.SpecialSummon(tc,TYPE_LINK,tp,tp,false,false,POS_FACEUP)~=0 then
+            if Duel.SpecialSummon(tc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)~=0 then
                 Duel.BreakEffect()
                 Duel.Overlay(tc,Group.FromCards(e:GetHandler()))
             end

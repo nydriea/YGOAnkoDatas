@@ -89,24 +89,29 @@ end
 --注：通过不设置OperationInfo和EFFECT_FLAG_CANNOT_DISABLE来达成无种类效果。
 function cm.RealeaseTokenToSpecialSummon(c, type)
     local function SpecialSummonCostFilter(fc)
-        return fc:IsCode(182224001)
+        return fc:IsCode(182224001) and fc:IsReleasable()
     end
     local function SpecialSummonCost(e,tp,eg,ep,ev,re,r,rp,chk)
         if chk==0 then return Duel.CheckReleaseGroup(tp,SpecialSummonCostFilter,1,nil,tp) end
-        local g=Duel.SelectReleaseGroup(tp,SpecialSummonCostFilter,1,1,nil,tp)
+        local g=Duel.SelectReleaseGroup(tp,SpecialSummonCostFilter,1,1,nil)
         g:AddCard(e:GetHandler())
         Duel.Release(g,REASON_COST)
     end
-    local function SpecialSummonTargetFilter(tc,e,tp)
-        return tc:IsLevel(8) and tc:IsSetCard(0xf79) and tc:IsType(TYPE_RITUAL) and Duel.GetLocationCount(tp, LOCATION_MZONE)>0
+    local function SpecialSummonTargetFilter(tc,e,tp,sg)
+        return tc:IsLevel(8) and tc:IsSetCard(0xf79) and tc:IsType(TYPE_RITUAL) and Duel.GetMZoneCount(tp,sg)>0
             and tc:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,true)
     end
     local function SpecialSummonTarget(e,tp,eg,ep,ev,re,r,rp,chk)
-        if chk==0 then return Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,e,tp) end
+        if chk==0 then
+            local sc=Duel.GetFirstMatchingCard(SpecialSummonCostFilter,tp,LOCATION_MZONE,0,nil)
+            local sg=Group.CreateGroup()
+            sg:AddCard(e:GetHandler())
+            sg:AddCard(sc)
+            return Duel.IsExistingMatchingCard(SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,e,tp,sg) end
     end
     local function SpecialSummonOperation(e,tp,eg,ep,ev,re,r,rp)
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-        local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,e,tp)
+        local g=Duel.SelectMatchingCard(tp,SpecialSummonTargetFilter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,e,tp,nil)
         local tc=g:GetFirst()
         if tc then
             Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)

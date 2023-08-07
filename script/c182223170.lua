@@ -61,11 +61,13 @@ end
 
 --#region e4
 function cm.e4costfilter(fc)
-    return fc:IsSetCard(0xf79) and fc:IsAbleToGrave()
+    return fc:IsSetCard(0xf79) and fc:IsAbleToGrave() and fc:IsType(TYPE_MONSTER)
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(cm.e4costfilter,tp,LOCATION_DECK,0,1,e:GetHandler()) end
-    Duel.SendtoGrave(tp,cm.e4costfilter,1,1,REASON_COST)
+    if chk==0 then return Duel.IsExistingMatchingCard(GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+    local g=Duel.SelectMatchingCard(tp,GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,1,nil,e:GetHandler())
+    Duel.SendtoGrave(g,REASON_COST)
 end
 function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and
@@ -79,7 +81,7 @@ end
 function cm.e4op(e,tp,eg,ep,ev,re,r,rp)
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0
         or not Duel.IsPlayerCanSpecialSummonMonster(tp,tokenCode,0,TYPES_TOKEN_MONSTER,0,0,4,RACE_FAIRY,ATTRIBUTE_LIGHT) then return end
-    local e1=Effect.CreateEffect(c)
+    local e1=Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
