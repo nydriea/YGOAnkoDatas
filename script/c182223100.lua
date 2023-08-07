@@ -74,10 +74,10 @@ end
 --#region e2
 function cm.e2con(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttackTarget()
-	return at:IsControler(tp) and at:IsFaceup() and at:IsSetCard(NYGracia.CardSet)
+	return at:IsControler(tp) and at:IsFaceup() and at:IsSetCard(0xf79)
 end
 function cm.e2costfilter(c)
-	return c:IsSetCard(NYGracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(0xf79) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
 end
 function cm.e2cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e2costfilter,tp,LOCATION_HAND,0,1,nil) end
@@ -102,7 +102,7 @@ end
 
 --#region e3
 function cm.e3confilter(c,tp)
-	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsSetCard(NYGracia.CardSet)
+	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsSetCard(0xf79)
 end
 function cm.e3con(e,tp,eg,ep,ev,re,r,rp)
 	if rp~=1-tp or not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return false end

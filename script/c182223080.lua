@@ -19,7 +19,7 @@ end
 
 --#region e1
 function cm.e1costfilter(c)
-	return c:IsSetCard(NYGracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(0xf79) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1costfilter,tp,LOCATION_GRAVE,0,1,nil) end
@@ -28,7 +28,7 @@ function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function cm.e1targetfilter(c)
-	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(NYGracia.CardSet)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(0xf79)
 end
 function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and cm.e1targetfilter(chkc) end
@@ -41,7 +41,7 @@ end
 function cm.e1op(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if tc:IsRelateToEffect(e) and tc:IsFaceup() and Duel.Draw (tp,1,REASON_EFFECT)~=0 then
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(tc)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 		e1:SetValue(1)

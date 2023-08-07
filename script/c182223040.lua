@@ -38,7 +38,7 @@ function cm.turnerfilter(c)
 end
 --#region e1
 function cm.e1filter(c,e,tp)
-	return c:IsSetCard(NYGracia.CardSet) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(0xf79) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_HAND,0,1,nil) end

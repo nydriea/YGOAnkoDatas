@@ -61,7 +61,7 @@ end
 
 --#region e4
 function cm.e4costfilter(fc)
-    return fc:IsSetCard(NY0xf79) and fc:IsAbleToGrave()
+    return fc:IsSetCard(0xf79) and fc:IsAbleToGrave()
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(cm.e4costfilter,tp,LOCATION_DECK,0,1,e:GetHandler()) end
@@ -74,7 +74,7 @@ function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function cm.e4splimit(e,lc,sump,sumtype,sumpos,targetp,se)
-    return not lc:IsSetCard(NY0xf79) and lc:IsLocation(LOCATION_EXTRA)
+    return not lc:IsSetCard(0xf79) and lc:IsLocation(LOCATION_EXTRA)
 end
 function cm.e4op(e,tp,eg,ep,ev,re,r,rp)
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0

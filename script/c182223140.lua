@@ -22,12 +22,12 @@ function cm.initial_effect(c)
     --1回合1次，自己对「神祝」怪兽召唤·特殊召唤成功的场合才能发动。
     --把对方的额外卡组确认，选那之内的1只怪兽里侧表示除外。
     local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e2:SetCategory(CATEGORY_REMOVE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
-	e2:SetRange(LOCATION_SZONE)
-	e2:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
-	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
+	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetCondition(cm.e2con)
 	e2:SetTarget(cm.e2tg)
 	e2:SetOperation(cm.e2op)
@@ -78,8 +78,11 @@ end
 --#endregion
 
 --#region e2
+function cm.e2confilter(c,tp)
+	return c:IsFaceup() and c:IsSummonPlayer(tp) and c:IsSetCard(0xf79)
+end
 function cm.e2con(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(Card.IsSummonPlayer,1,nil, tp)
+	return eg:IsExists(cm.e2confilter,1,nil,tp)
 end
 function cm.e2triggerfilter(c,e,tp)
 	return c:IsSetCard(0xf79) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -88,8 +91,7 @@ function cm.e2targetfilter(c,tp)
 	return c:IsAbleToRemove(tp,POS_FACEDOWN)
 end
 function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and cm.e2triggerfilter(chkc,e,tp) end
-    if chk==0 then return Duel.IsExistingMatchingCard(cm.e2targetfilter,tp,0,LOCATION_EXTRA,1,nil,tp) end
+	if chk==0 then return Duel.IsExistingMatchingCard(cm.e2targetfilter,tp,0,LOCATION_EXTRA,1,nil,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,1-tp,LOCATION_EXTRA)
 end
 function cm.e2op(e,tp,eg,ep,ev,r,r,rp)
