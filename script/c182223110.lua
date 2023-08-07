@@ -115,9 +115,7 @@ function cm.RealeaseTokenToSpecialSummon(c, type)
         local levelranklinkcheck = tc:IsLevel(8) or tc:IsRank(4) or tc:IsLink(3)
         local result = tc:IsType(ctype) and tc:IsSetCard(NY0xf79)
             and levelranklinkcheck 
-        if ctype==TYPE_RITUAL then
-            Debug.Message(result)
-        end
+
         if ctype~=TYPE_MONSTER and ctype~=TYPE_RITUAL then
             result = result and Duel.GetLocationCountFromEx(tp,tp,nil,tc)>0 and tc:IsCanBeSpecialSummoned(e,summontype,tp,false,false)
         else
