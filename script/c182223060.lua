@@ -1,7 +1,6 @@
 --神祝大天使 妮娜·阿提亚尔
 local m=182223060
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddFusionProcCodeFun(c,182223050,cm.fusionfilter,1,true,true)
@@ -35,7 +34,7 @@ function cm.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function cm.fusionfilter(c)
-	return c:IsLevel(4) and c:IsSetCard(gracia.CardSet)
+	return c:IsLevel(4) and c:IsSetCard(NYGracia.CardSet)
 end
 
 --#region e1
@@ -46,7 +45,7 @@ function cm.e1con(e,tp,eg,ep,ev,re,r,rp)
         and rc:IsCode(182223050)
 end
 function cm.e1filter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsAbleToHand()
+	return c:IsSetCard(NYGracia.CardSet) and c:IsAbleToHand()
 end
 function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1filter,tp,LOCATION_DECK,0,1,nil) end

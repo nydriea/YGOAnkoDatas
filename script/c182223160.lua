@@ -1,7 +1,6 @@
 --神祝法咒 烈风之矢
 local m=182223160
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     --自己场上有「神祝」怪兽存在的场合，以对方场上1只表侧表示的卡为对象才能发动。
     --那张卡的效果直到回合结束时无效。
@@ -28,7 +27,7 @@ end
 
 --#region e1
 function cm.filter(c)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet) and
+	return c:IsFaceup() and c:IsSetCard(0xf79) and
         (c:IsLevelAbove(8) or c:IsRankAbove(4) or  c:IsLinkAbove(3))
 end
 function cm.con(e,tp,eg,ep,ev,re,r,rp)

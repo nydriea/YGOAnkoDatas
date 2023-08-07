@@ -1,7 +1,6 @@
 --神祝法咒 神能如电
 local m=182223150
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     --自己场上有「神祝」卡存在，怪兽的效果·魔法·陷阱卡发动时才能发动。
     --那个发动无效，那张卡回到持有者卡组。
@@ -30,7 +29,7 @@ end
 
 --#region e1
 function cm.e1filter(c)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet)
+	return c:IsFaceup() and c:IsSetCard(0xf79)
 end
 function cm.e1con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(cm.e1filter,tp,LOCATION_ONFIELD,0,1,nil)
@@ -54,7 +53,7 @@ end
 
 --#region e1
 function cm.e2filter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
+	return c:IsSetCard(0xf79) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
 end
 function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0

@@ -1,7 +1,6 @@
 --神祝圣像 女神伊婕丝
 local m=182223170
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     --Activate
 	local e1=Effect.CreateEffect(c)
@@ -62,7 +61,7 @@ end
 
 --#region e4
 function cm.e4costfilter(fc)
-    return fc:IsSetCard(NYGracia.CardSet) and fc:IsAbleToGrave()
+    return fc:IsSetCard(NY0xf79) and fc:IsAbleToGrave()
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(cm.e4costfilter,tp,LOCATION_DECK,0,1,e:GetHandler()) end
@@ -75,7 +74,7 @@ function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function cm.e4splimit(e,lc,sump,sumtype,sumpos,targetp,se)
-    return not lc:IsSetCard(NYGracia.CardSet) and lc:IsLocation(LOCATION_EXTRA)
+    return not lc:IsSetCard(NY0xf79) and lc:IsLocation(LOCATION_EXTRA)
 end
 function cm.e4op(e,tp,eg,ep,ev,re,r,rp)
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0
@@ -98,7 +97,7 @@ function cm.e5con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
 end
 function cm.e5costfilter(c,tp)
-	return c:IsType(TYPE_MONSTER) and c:IsReleasable() and c:IsSetCard(gracia.CardSet)
+	return c:IsType(TYPE_MONSTER) and c:IsReleasable() and c:IsSetCard(0xf79)
 end
 function cm.e5cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e5costfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil,tp) end
@@ -111,13 +110,13 @@ function cm.e5tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_COIN,nil,0,tp,1)
 end
 function cm.e5opfrontfilter1(c)
-    return c:IsSetCard(gracia.CardSet) and c:IsAbleToGrave() and c:IsType(TYPE_SPELL+TYPE_TRAP)
+    return c:IsSetCard(0xf79) and c:IsAbleToGrave() and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function cm.e5opfrontfilter2(c)
     return c:IsType(TYPE_MONSTER) and c:IsAbleToDeck()
 end
 function cm.e5opinsidefilter1(c)
-    return c:IsSetCard(gracia.CardSet) and c:IsAbleToDeck() and c:IsType(TYPE_SPELL+TYPE_TRAP)
+    return c:IsSetCard(0xf79) and c:IsAbleToDeck() and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function cm.e5opinsidefilter2(c)
     return c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()

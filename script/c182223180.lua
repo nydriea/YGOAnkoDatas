@@ -1,7 +1,6 @@
 --神祝法咒 海涛波动
 local m=182223180
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -24,7 +23,7 @@ end
 
 --#region e1
 function cm.filter(c,e,tp)
-	return c:IsSetCard(gracia.CardSet) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0xf79) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function cm.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and cm.filter(chkc,e,tp) end
@@ -44,7 +43,7 @@ end
 
 --#region e2
 function cm.e2filter(c,tp)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet) and c:IsLocation(LOCATION_MZONE)
+	return c:IsFaceup() and c:IsSetCard(0xf79) and c:IsLocation(LOCATION_MZONE)
 		and c:IsControler(tp) and c:IsReason(REASON_EFFECT+REASON_BATTLE) and not c:IsReason(REASON_REPLACE)
 end
 function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk)

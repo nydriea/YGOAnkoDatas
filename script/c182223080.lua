@@ -1,7 +1,6 @@
 --神祝大天使 莉欧拉·密海伊勒
 local m=182223080
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     c:SetUniqueOnField(1,0,m)
 
@@ -20,7 +19,7 @@ end
 
 --#region e1
 function cm.e1costfilter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(NYGracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1costfilter,tp,LOCATION_GRAVE,0,1,nil) end
@@ -29,7 +28,7 @@ function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function cm.e1targetfilter(c)
-	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(gracia.CardSet)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(NYGracia.CardSet)
 end
 function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and cm.e1targetfilter(chkc) end

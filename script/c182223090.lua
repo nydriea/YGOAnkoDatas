@@ -1,7 +1,6 @@
 --神祝圣居
 local m=182223090
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	local eactive=Effect.CreateEffect(c)
 	eactive:SetType(EFFECT_TYPE_ACTIVATE)
@@ -84,7 +83,7 @@ function cm.e2con(e)
 	return Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL and Duel.GetAttackTarget()
 end
 function cm.e2tg(e,c)
-	return c==Duel.GetAttacker() and c:IsSetCard(gracia.CardSet)
+	return c==Duel.GetAttacker() and c:IsSetCard(NYGracia.CardSet)
 end
 function cm.e2val(e,c)
 	local d=Duel.GetAttackTarget()
@@ -96,13 +95,13 @@ end
 
 --#region e3
 function cm.confilter(c,tp)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet) and c:IsSummonPlayer(tp)
+	return c:IsFaceup() and c:IsSetCard(NYGracia.CardSet) and c:IsSummonPlayer(tp)
 end
 function cm.e3con(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(cm.confilter,1,nil,tp)
 end
 function cm.e3costfilter(c)
-    return c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToDeckAsCost()
+    return c:IsSetCard(NYGracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToDeckAsCost()
 end
 function cm.e3cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e3costfilter,tp,LOCATION_REMOVED,0,1,nil) end

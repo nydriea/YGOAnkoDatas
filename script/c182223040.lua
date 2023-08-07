@@ -1,7 +1,6 @@
 --神祝大天使 阿丽艾拉·伊斯拉菲尔
 local m=182223040
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	aux.AddMaterialCodeList(c,182223030)
 	aux.AddSynchroProcedure(c,cm.turnerfilter,aux.NonTuner(nil),1)
@@ -39,7 +38,7 @@ function cm.turnerfilter(c)
 end
 --#region e1
 function cm.e1filter(c,e,tp)
-	return c:IsSetCard(gracia.CardSet) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(NYGracia.CardSet) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_HAND,0,1,nil) end

@@ -1,7 +1,6 @@
 --神祝大天使 塔丽娅·阿拉瑞尔
 local m=182223140
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	c:EnableReviveLimit()
 	c:SetUniqueOnField(1,0,m)
@@ -40,7 +39,7 @@ end
 
 --#region e1
 function cm.e1costfilter(c,tp)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+	return c:IsFaceup() and c:IsSetCard(0xf79) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
         and Duel.GetMZoneCount(tp,c,tp,LOCATION_REASON_CONTROL)>0
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -52,7 +51,7 @@ function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function cm.e1targetfilter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
+	return c:IsSetCard(0xf79) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
 function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1targetfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -83,7 +82,7 @@ function cm.e2con(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(Card.IsSummonPlayer,1,nil, tp)
 end
 function cm.e2triggerfilter(c,e,tp)
-	return c:IsSetCard(gracia.CardSet) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0xf79) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function cm.e2targetfilter(c,tp)
 	return c:IsAbleToRemove(tp,POS_FACEDOWN)

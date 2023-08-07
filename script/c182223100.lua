@@ -1,7 +1,6 @@
 --神祝圣像·女神迦莱蕾娜
 local m=182223100
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
     local eactive=Effect.CreateEffect(c)
 	eactive:SetType(EFFECT_TYPE_ACTIVATE)
@@ -75,10 +74,10 @@ end
 --#region e2
 function cm.e2con(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttackTarget()
-	return at:IsControler(tp) and at:IsFaceup() and at:IsSetCard(gracia.CardSet)
+	return at:IsControler(tp) and at:IsFaceup() and at:IsSetCard(NYGracia.CardSet)
 end
 function cm.e2costfilter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(NYGracia.CardSet) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost()
 end
 function cm.e2cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e2costfilter,tp,LOCATION_HAND,0,1,nil) end
@@ -103,7 +102,7 @@ end
 
 --#region e3
 function cm.e3confilter(c,tp)
-	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsSetCard(gracia.CardSet)
+	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsSetCard(NYGracia.CardSet)
 end
 function cm.e3con(e,tp,eg,ep,ev,re,r,rp)
 	if rp~=1-tp or not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return false end

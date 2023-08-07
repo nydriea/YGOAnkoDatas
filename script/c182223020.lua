@@ -1,11 +1,10 @@
 --神祝大天使 蜜莉恩·阿兹瑞尔
 local m=182223020
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	c:SetUniqueOnField(1,0,m)
 	c:EnableReviveLimit()
-	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,gracia.CardSet),4,3)
+	aux.AddXyzProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0xf79),4,3)
     
 	--1回合1次，对方的卡的效果在场上发动时才能发动。
     --那个发动无效，场上的那张卡在这张卡下面重叠作为超量素材。

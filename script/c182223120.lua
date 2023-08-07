@@ -1,7 +1,6 @@
 --神祝大天使 阿雅·塞德利
 local m=182223120
 local cm=_G["c"..m]
-xpcall(function() require("expansions/script/NY-GRACEIA") end,function() require("script/NY-GRACEIA") end)
 function cm.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsType, TYPE_MONSTER),2,99,cm.lcheck)
@@ -40,10 +39,10 @@ end
 
 --#region e1
 function cm.e1costfilter(c)
-	return c:IsSetCard(gracia.CardSet) and c:IsAbleToRemoveAsCost()
+	return c:IsSetCard(0xf79) and c:IsAbleToRemoveAsCost()
 end
 function cm.e1targetfilter(c,e,tp)
-	return c:IsSetCard(gracia.CardSet) and c:IsLevel(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0xf79) and c:IsLevel(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function cm.e1cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1costfilter,tp,LOCATION_GRAVE,0,1,nil) end
@@ -82,7 +81,7 @@ function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function cm.e2desfilter(c)
-	return c:IsFaceup() and c:IsSetCard(gracia.CardSet)
+	return c:IsFaceup() and c:IsSetCard(0xf79)
 end
 function cm.e2op(e,tp,eg,ep,ev,re,r,rp)
 	local ec=re:GetHandler()
