@@ -7,10 +7,11 @@ function cm.initial_effect(c)
     --自己·对方的回合把自己墓地的1张「神祝」卡除外，以自己场上1只「神祝」怪兽为对象才能发动。
     --自己从卡组抽1张。这个回合，作为对象的怪兽不会成为效果的对象，不会被效果破坏。
     local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(3966653,0))
-	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1)
 	e1:SetRange(LOCATION_MZONE)
+	e1:SetHintTiming(0,TIMING_MAIN_END+TIMING_END_PHASE)
 	e1:SetCost(cm.e1cost)
 	e1:SetTarget(cm.e1tg)
 	e1:SetOperation(cm.e1op)
