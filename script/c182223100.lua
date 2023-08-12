@@ -89,13 +89,13 @@ function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local tg=Duel.GetAttacker()
 	if chkc then return chkc==tg end
 	if chk==0 then return tg:IsOnField() and tg:IsCanBeEffectTarget(e) end
-	Duel.SetTargetCard(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SetTargetCard(tg)
 end
 function cm.e2op(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetAttacker()
 	if tc:IsRelateToEffect(e) and Duel.NegateAttack() then
-		Duel.BreakEffect(e,tp,eg,ep,ev,re,r,rp)
-		cm.aftereffect(tp)
+		Duel.BreakEffect()
+		cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 --#endregion
@@ -116,7 +116,7 @@ end
 function cm.e3op(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.NegateEffect(ev) then
 		Duel.BreakEffect()
-		cm.aftereffect(tp)
+		cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 --#endregion
@@ -145,17 +145,18 @@ function cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
     if (tc1.IsType(TYPE_MONSTER) and tc2.IsType(TYPE_MONSTER)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         local g=Duel.SelectMatchingCard(tp,cm.aespfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,e,tp)
+		local sc=g:GetFirst()
         if g:GetCount()>0 then
             local summontype = SUMMON_TYPE_SPECIAL
-            if type==TYPE_RITUAL then
+            if sc.IsType(TYPE_RITUAL) then
                 summontype = SUMMON_TYPE_RITUAL
-            elseif type==TYPE_FUSION then
+            elseif sc.IsType(TYPE_FUSION) then
                 summontype = SUMMON_TYPE_FUSION
-            elseif type==TYPE_SYNCHRO then
+            elseif sc.IsType(TYPE_SYNCHRO) then
                 summontype = SUMMON_TYPE_SYNCHRO
-            elseif type==TYPE_XYZ then
+            elseif sc.IsType(TYPE_XYZ) then
                 summontype = SUMMON_TYPE_XYZ
-            elseif type==TYPE_LINK then
+            elseif sc.IsType(TYPE_LINK) then
                 summontype = SUMMON_TYPE_LINK
             end
             Duel.SpecialSummon(g,summontype,tp,tp,true,false,POS_FACEUP)
