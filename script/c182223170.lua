@@ -62,9 +62,9 @@ function cm.e4costfilter(fc)
     return fc:IsSetCard(0xf79) and fc:IsAbleToGrave() and fc:IsType(TYPE_MONSTER)
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(e4costfilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
+    if chk==0 then return Duel.IsExistingMatchingCard(e4costfilter,tp,LOCATION_DECK,0,1,nil) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-    local g=Duel.SelectMatchingCard(tp,e4costfilter,tp,LOCATION_DECK,0,1,1,nil,e:GetHandler())
+    local g=Duel.SelectMatchingCard(tp,e4costfilter,tp,LOCATION_DECK,0,1,1,nil)
     Duel.SendtoGrave(g,REASON_COST)
 end
 function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
