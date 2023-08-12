@@ -159,7 +159,10 @@ function cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
             elseif sc.IsType(TYPE_LINK) then
                 summontype = SUMMON_TYPE_LINK
             end
-            Duel.SpecialSummon(g,summontype,tp,tp,true,false,POS_FACEUP)
+			if summontype~=TYPE_RITUAL then
+            	Duel.SpecialSummon(g,summontype,tp,tp,false,false,POS_FACEUP)
+			else
+            	Duel.SpecialSummon(g,summontype,tp,tp,false,true,POS_FACEUP)
         end
     elseif (tc1.IsType(TYPE_SPELL) and tc2.IsType(TYPE_SPELL)) then
         Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(m,1))
