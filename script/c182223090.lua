@@ -18,6 +18,7 @@ function cm.initial_effect(c)
 	e1:SetCost(cm.e1cost)
 	e1:SetTarget(cm.e1tg)
 	e1:SetOperation(cm.e1op)
+	c:RegisterEffect(e1)
 
     --「神祝」怪兽向持有比那个攻击力高的攻击力的怪兽攻击的场合，
     --攻击怪兽的攻击力只在伤害计算时上升1000。
@@ -47,6 +48,9 @@ function cm.initial_effect(c)
 	e3:SetTarget(cm.e3tg)
 	e3:SetOperation(cm.e3op)
 	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e4)
 end
 
 --#region e1
@@ -111,12 +115,11 @@ function cm.e3cost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function cm.e3tgfilter(c,tp)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable(true)
-        and (not c:IsType(TYPE_FIELD) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0)
 end
 function cm.e3tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and cm.e3tgfilter(chkc,tp) end
-	if chk==0 then return true end
+	if chk==0 then return Duel.IsExistingMatchingCard(cm.e3tgfilter,tp,LOCATION_GRAVE,0,1,nil,tp)
+		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 	local g=Duel.SelectTarget(tp,cm.e3tgfilter,tp,LOCATION_GRAVE,0,1,1,nil,tp)
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,1,0,0)

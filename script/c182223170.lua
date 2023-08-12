@@ -44,14 +44,12 @@ function cm.initial_effect(c)
     --里的场合，从自己的场上·墓地·除外选1张「神祝」魔法·陷阱卡回到卡组。
     --那之后，可以选自己卡组的1只怪兽送去墓地。
     local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(146746,0))
-	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e5:SetType(EFFECT_TYPE_QUICK_O)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetHintTiming(0,TIMING_MAIN_END)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_MZONE)
-	e5:SetCountLimit(1,146746)
+	e5:SetCountLimit(1,m+1)
 	e5:SetCondition(cm.e5con)
 	e5:SetCost(cm.e5cost)
 	e5:SetTarget(cm.e5tg)
@@ -64,9 +62,9 @@ function cm.e4costfilter(fc)
     return fc:IsSetCard(0xf79) and fc:IsAbleToGrave() and fc:IsType(TYPE_MONSTER)
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
+    if chk==0 then return Duel.IsExistingMatchingCard(e4costfilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-    local g=Duel.SelectMatchingCard(tp,GenerateTokenCostFilter,tp,LOCATION_DECK,0,1,1,nil,e:GetHandler())
+    local g=Duel.SelectMatchingCard(tp,e4costfilter,tp,LOCATION_DECK,0,1,1,nil,e:GetHandler())
     Duel.SendtoGrave(g,REASON_COST)
 end
 function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
