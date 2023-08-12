@@ -51,12 +51,13 @@ function cm.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 --#endregion
 
---#region e1
+--#region e2
 function cm.e2filter(c)
 	return c:IsSetCard(0xf79) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
 end
 function cm.e2tg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+	if chk==0 then return e:GetHandler():IsAbleToRemove() and aux.exccon(e)
+		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 		and Duel.IsExistingMatchingCard(cm.e2filter,tp,LOCATION_DECK,0,1,nil) end
 end
 function cm.e2op(e,tp,eg,ep,ev,re,r,rp)

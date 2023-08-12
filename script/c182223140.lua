@@ -57,6 +57,10 @@ function cm.e1tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(cm.e1targetfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
+function cm.e1afterfilter(c,code)
+	return c:IsSetCard(0xf79) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
+		and not c:IsCode(code)
+end
 function cm.e1op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,cm.e1targetfilter,tp,LOCATION_DECK,0,1,1,nil)
@@ -69,7 +73,9 @@ function cm.e1op(e,tp,eg,ep,ev,re,r,rp)
             and Duel.SelectYesNo(tp,aux.Stringid(m,1)) then
 				Duel.BreakEffect()
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-				local sg=g2:Select(tp,1,1,nil)
+				local gcode=g:GetFirst():GetCode()
+				local g3=Duel.GetMatchingGroup(cm.e1afterfilter,tp,LOCATION_DECK,0,nil, gcode)
+				local sg=g3:Select(tp,1,1,nil)
 				Duel.SendtoHand(sg,nil,REASON_EFFECT)
 				Duel.ConfirmCards(1-tp,sg)
         end
