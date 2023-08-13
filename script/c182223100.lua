@@ -28,7 +28,7 @@ function cm.initial_effect(c)
     local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetRange(LOCATION_MZONE)
+	e2:SetRange(LOCATION_SZONE)
 	e2:SetCode(EVENT_BE_BATTLE_TARGET)
 	e2:SetCountLimit(1,m)
 	e2:SetCondition(cm.e2con)
@@ -123,7 +123,7 @@ end
 
 --#region aftereffect
 function cm.aespfilter(c,e,tp)
-    local lrlcheck= (c:IsLevel(8) and c:IsRank(4) and c:IsLink(3))
+    local lrlcheck= (c:IsLevel(8) or c:IsRank(4) or c:IsLink(3))
     return lrlcheck and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
     and ((c:IsLocation(LOCATION_DECK) and Duel.GetMZoneCount(tp)>0)
         or (c:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0))
@@ -141,22 +141,21 @@ function cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ConfirmDecktop(1-tp,1)
     local tc1=Duel.GetDecktopGroup(tp,1):GetFirst()
 	local tc2=Duel.GetDecktopGroup(1-tp,1):GetFirst()
-	if not tc1 or not tc2 then return end
-    if (tc1.IsType(TYPE_MONSTER) and tc2.IsType(TYPE_MONSTER)) then
+    if (tc1:IsType(TYPE_MONSTER) and tc2:IsType(TYPE_MONSTER)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         local g=Duel.SelectMatchingCard(tp,cm.aespfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,1,nil,e,tp)
 		local sc=g:GetFirst()
         if g:GetCount()>0 then
             local summontype = SUMMON_TYPE_SPECIAL
-            if sc.IsType(TYPE_RITUAL) then
+            if sc:isType(TYPE_RITUAL) then
                 summontype = SUMMON_TYPE_RITUAL
-            elseif sc.IsType(TYPE_FUSION) then
+            elseif sc:isType(TYPE_FUSION) then
                 summontype = SUMMON_TYPE_FUSION
-            elseif sc.IsType(TYPE_SYNCHRO) then
+            elseif sc:isType(TYPE_SYNCHRO) then
                 summontype = SUMMON_TYPE_SYNCHRO
-            elseif sc.IsType(TYPE_XYZ) then
+            elseif sc:isType(TYPE_XYZ) then
                 summontype = SUMMON_TYPE_XYZ
-            elseif sc.IsType(TYPE_LINK) then
+            elseif sc:isType(TYPE_LINK) then
                 summontype = SUMMON_TYPE_LINK
             end
 			if summontype~=TYPE_RITUAL then
@@ -164,7 +163,7 @@ function cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
 			else
             	Duel.SpecialSummon(g,summontype,tp,tp,false,true,POS_FACEUP)
         end
-    elseif (tc1.IsType(TYPE_SPELL) and tc2.IsType(TYPE_SPELL)) then
+    elseif (tc1:IsType(TYPE_SPELL) and tc2:IsType(TYPE_SPELL)) then
         Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(m,1))
         local sc=Duel.SelectMatchingCard(tp,cm.aeactivespellfilter,tp,LOCATION_GRAVE,0,1,1,nil,tp):GetFirst()
         local e1=Effect.CreateEffect(c)
@@ -184,7 +183,7 @@ function cm.aftereffect(e,tp,eg,ep,ev,re,r,rp)
         local cost=te:GetCost()
         if cost then cost(te,tep,eg,ep,ev,re,r,rp,1) end
         Duel.RaiseEvent(sc,m,te,0,tp,tp,Duel.GetCurrentChain())
-    elseif (tc1.IsType(TYPE_TRAP) and tc2.IsType(TYPE_TRAP)) then
+    elseif (tc1:IsType(TYPE_TRAP) and tc2:IsType(TYPE_TRAP)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
         local sc=Duel.SelectMatchingCard(tp,cm.aesearchtrapfilter,tp,LOCATION_GRAVE,0,1,1,nil,tp):GetFirst()
         if Duel.SendtoHand(sc,nil,REASON_EFFECT)~=0 then
