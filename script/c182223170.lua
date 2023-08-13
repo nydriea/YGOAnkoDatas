@@ -17,7 +17,7 @@ function cm.initial_effect(c)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(0,LOCATION_MZONE)
-	e2:SetValue(500)
+	e2:SetValue(-500)
 	c:RegisterEffect(e2)
     local e3=e2:Clone()
 	e3:SetCode(EFFECT_UPDATE_DEFENSE)
@@ -48,7 +48,7 @@ function cm.initial_effect(c)
 	e5:SetCode(EVENT_FREE_CHAIN)
 	e5:SetHintTiming(0,TIMING_MAIN_END)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e5:SetRange(LOCATION_MZONE)
+	e5:SetRange(LOCATION_SZONE)
 	e5:SetCountLimit(1,m+1)
 	e5:SetCondition(cm.e5con)
 	e5:SetCost(cm.e5cost)
@@ -62,9 +62,9 @@ function cm.e4costfilter(fc)
     return fc:IsSetCard(0xf79) and fc:IsAbleToGrave() and fc:IsType(TYPE_MONSTER)
 end
 function cm.e4cost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(e4costfilter,tp,LOCATION_DECK,0,1,nil) end
+    if chk==0 then return Duel.IsExistingMatchingCard(cm.e4costfilter,tp,LOCATION_DECK,0,1,nil) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-    local g=Duel.SelectMatchingCard(tp,e4costfilter,tp,LOCATION_DECK,0,1,1,nil)
+    local g=Duel.SelectMatchingCard(tp,cm.e4costfilter,tp,LOCATION_DECK,0,1,1,nil)
     Duel.SendtoGrave(g,REASON_COST)
 end
 function cm.e4tg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -127,12 +127,12 @@ function cm.e5op(e,tp,eg,ep,ev,re,r,rp)
 		local fg1=Duel.GetMatchingGroup(cm.e5opfrontfilter1,tp,LOCATION_HAND+LOCATION_SZONE+LOCATION_DECK,0,nil)
         if fg1:GetCount()>0 then
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-            local tgc=fg1:Select(tp,1,1)
+            local tgc=fg1:Select(tp,1,1,nil)
             local fg2=Duel.GetMatchingGroup(cm.e5opfrontfilter2,tp,0,LOCATION_GRAVE,nil)
             if (Duel.SendtoGrave(tgc,REASON_EFFECT) and fg2:GetCount()>0) then
                 Duel.BreakEffect()
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-                local tdc=fg2:Select(tp,1,1)
+                local tdc=fg2:Select(tp,1,1,nil)
                 Duel.SendtoDeck(tdc,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
             end
         end
@@ -140,12 +140,12 @@ function cm.e5op(e,tp,eg,ep,ev,re,r,rp)
 		local ig1=Duel.GetMatchingGroup(cm.e5opfrontfilter1,tp,LOCATION_SZONE+LOCATION_GRAVE+LOCATION_REMOVED,0,nil)
         if ig1:GetCount()>0 then
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-            local tdc=ig1:Select(tp,1,1)
+            local tdc=ig1:Select(tp,1,1,nil)
             local ig2=Duel.GetMatchingGroup(cm.e5opfrontfilter2,tp,LOCATION_DECK,0,nil)
             if (Duel.SendtoDeck(tdc,nil,SEQ_DECKSHUFFLE,REASON_EFFECT) and ig2:GetCount()>0) then
                 Duel.BreakEffect()
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-                local tgc=ig2:Select(tp,1,1)
+                local tgc=ig2:Select(tp,1,1,nil)
                 Duel.SendtoGrave(tgc,REASON_EFFECT)
             end
         end
