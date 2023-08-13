@@ -59,10 +59,12 @@ function cm.activate(e,tp,eg,ep,ev,re,r,rp)
 		if Duel.IsExistingMatchingCard(cm.filter,tp,LOCATION_MZONE,0,1,nil) and sg:GetCount()>0
             and Duel.SelectYesNo(tp,aux.Stringid(m,0)) then
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISABLE)
-                local sc=sg:Select(tp,1,1)
-                Duel.NegateRelatedChain(tc,RESET_TURN_SET)
-                sc:RegisterEffect(e1)
-                sc:RegisterEffect(e2)
+                local sc=sg:Select(tp,1,1,nil):GetFirst()
+                Duel.NegateRelatedChain(sc,RESET_TURN_SET)
+				local e3=e1:Clone()
+				local e4=e1:Clone()
+                sc:RegisterEffect(e3)
+                sc:RegisterEffect(e4)
 		end
 	end
 end
