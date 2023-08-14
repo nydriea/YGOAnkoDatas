@@ -128,7 +128,7 @@ function cm.RealeaseTokenToSpecialSummon(c)
         local tc=g:GetFirst()
         if tc then
             tc:SetMaterial(nil)
-            Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
+            Duel.SpecialSummon(tc,SUMMON_TYPE_XYZ,tp,tp,false,true,POS_FACEUP)
             tc:CompleteProcedure()
             Duel.BreakEffect()
             Duel.Overlay(tc,Group.FromCards(e:GetHandler()))
