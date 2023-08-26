@@ -19,7 +19,7 @@ function cm.initial_effect(c)
 end
 
 function cm.filter(c,e,tp)
-	return c:IsSetCard(0xf79) and c:IsAbleToDeck()
+	return c:IsSetCard(0xf79) and c:IsAbleToDeck() and c:IsType(TYPE_MONSTER)
 end
 function cm.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and cm.filter(chkc) end
@@ -77,13 +77,12 @@ function cm.GenerateToken(c, tokenCode)
         Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
     end
 
-    local code=c:GetCode()
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-	e1:SetDescription(aux.Stringid(code,0))
+	e1:SetDescription(aux.Stringid(m,0))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1,code)
+	e1:SetCountLimit(1,m)
 	e1:SetCost(GenerateTokenCost)
 	e1:SetTarget(GenerateTokenTarget)
 	e1:SetOperation(GenerateTokenOperation)
@@ -134,10 +133,9 @@ function cm.RealeaseTokenToSpecialSummon(c)
             Duel.Overlay(tc,Group.FromCards(e:GetHandler()))
         end
     end
-    local code=c:GetCode()
     local e1=Effect.CreateEffect(c)
     e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-    e1:SetDescription(aux.Stringid(code,1))
+    e1:SetDescription(aux.Stringid(m,1))
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetTarget(SpecialSummonTarget)
     e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
